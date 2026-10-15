@@ -1,0 +1,36 @@
+name: Lookie
+description: Trigger a Lookie review on a pull request and print the summary.
+author: sutilab
+branding:
+  icon: eye
+  color: gray-dark
+inputs:
+  api-url:
+    description: Lookie API URL (https), from Lookie → Settings. The token is sent only to this URL.
+    required: true
+  token:
+    description: Org API token from Lookie → Settings. Store it as a secret.
+    required: true
+  watcher:
+    description: Which watcher to run. Only review is available; ci warns and does nothing for now.
+    default: review
+  pr-number:
+    description: Pull request to run against. Defaults to the triggering pull request.
+  wait:
+    description: Poll until the run finishes, print the summary and write the job summary.
+    default: "true"
+  timeout-minutes:
+    description: How long to wait for the run when wait is true. The step fails after this.
+    default: "10"
+outputs:
+  run-id:
+    description: ID of the queued Lookie run.
+  status:
+    description: Run status, queued when wait is false, else posted, skipped, failed or invalid_output.
+  errors:
+    description: Number of error findings (set when wait is true).
+  warnings:
+    description: Number of warning findings (set when wait is true).
+runs:
+  using: node24
+  main: dist/index.js
